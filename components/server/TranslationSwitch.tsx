@@ -23,7 +23,7 @@ export const TranslationSwitch: React.FC<Props> = () => {
 
     return (
         <Select onValueChange={changeLang}>
-            <SelectTrigger className="w-[70px] border-none text-gray-400 font-medium">
+            <SelectTrigger className="w-[70px] border border-gray-400 rounded-xl text-gray-400 font-medium">
                 <SelectValue placeholder={localeValue?.toUpperCase()} />
             </SelectTrigger>
             <SelectContent className='w-[75px] bg-white rounded-lg'>

@@ -1,11 +1,18 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { Button } from '../ui/button';
 import { HeaderNav } from './HeaderNav';
+import { TranslationSwitch } from './TranslationSwitch';
 interface Props {
     className?: string;
-    translation?: any
+    translation?: {
+        nav: {
+            menu: string;
+            phone_number: string;
+            instagram: string;
+            telegram: string;
+        }
+    }
 }
 
 export const Header: React.FC<Props> = ({ className, translation }) => {
@@ -15,7 +22,10 @@ export const Header: React.FC<Props> = ({ className, translation }) => {
                 <Link href={"/"} className="text-2xl font-bold hover:text-black/75 transition-all">
                     mf_kiwwi
                 </Link>
-                <HeaderNav translation={translation?.nav} />
+                <div className='flex justify-center items-center gap-5'>
+                    <TranslationSwitch className='md:hidden block' />
+                    <HeaderNav translation={translation?.nav} />
+                </div>
             </div>
         </header>
     );
