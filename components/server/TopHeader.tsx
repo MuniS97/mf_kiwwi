@@ -9,22 +9,27 @@ import { TranslationSwitch } from './TranslationSwitch';
 interface Props {
     className?: string;
     translation?: {
-        phone_number: string;
-        instagram: string;
-        telegram: string;
+        nav: string[];
+        socials: {
+            instagram: string;
+            telegram: string;
+        }
+        phoneNumbers: string[];
     };
 }
 
-export const TopHeader: React.FC<Props> = ({ className }) => {
+export const TopHeader: React.FC<Props> = ({ className, translation }) => {
     return (
         <div className={cn("w-full py-2 bg-gray-100 max-md:hidden")}>
             <Container className='flex flex-col md:flex-row justify-between items-center gap-3 md:gap-5'>
                 {/* Contact Information */}
                 <div className={cn("flex items-center justify-between w-full md:w-auto", className)}>
                     <div className='flex flex-col md:flex-row justify-center items-center gap-2 md:gap-5'>
-                        <a href="tel:+998886687707" className="text-gray-400 hover:text-cyellow transition-all font-normal text-sm flex items-center">
-                            <PhoneOutgoing width={20} height={20} className='mr-2 md:mr-3' />+998 (88) 668 77 07
-                        </a>
+                        {translation?.phoneNumbers.map((item) => (
+                            <a href="tel:+998886687707" key={item} className="text-gray-400 hover:text-cyellow transition-all font-normal text-sm flex items-center">
+                                <PhoneOutgoing width={20} height={20} className='mr-2 md:mr-3' />{item}
+                            </a>
+                        ))}
                         {/* <a href="tel:+998973903666" className="text-gray-400 hover:text-cyellow transition-all font-normal text-sm flex items-center">
                             <PhoneOutgoing width={20} height={20} className='mr-2 md:mr-3' /> 998 (97) 390 36 66
                         </a> */}
@@ -43,7 +48,7 @@ export const TopHeader: React.FC<Props> = ({ className }) => {
                                 </TooltipTrigger>
                                 <TooltipContent className='py-1 px-5 rounded-full bg-white border border-gray-200'>
                                     <Link href={"https://www.instagram.com/mf_kiwwi/"} >
-                                        <p>Instagram</p>
+                                        <p>{translation?.socials?.instagram}</p>
                                     </Link>
                                 </TooltipContent>
                             </Tooltip>
@@ -55,7 +60,7 @@ export const TopHeader: React.FC<Props> = ({ className }) => {
                                 </TooltipTrigger>
                                 <TooltipContent className='py-1 px-5 rounded-full bg-white border border-gray-200'>
                                     <Link href={"https://t.me/mf_kiwwi"} >
-                                        <p>Telegram</p>
+                                        <p>{translation?.socials?.telegram}</p>
                                     </Link>
                                 </TooltipContent>
                             </Tooltip>

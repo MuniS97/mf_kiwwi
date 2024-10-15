@@ -16,7 +16,24 @@ type FormData = {
     message: string
 }
 
-export default function FooterForm({ className }: { className?: string }) {
+export default function FooterForm({ className, translation }: {
+    className?: string, translation: {
+        title: string;
+        name: string;
+        email: string;
+        phone: string;
+        phonePlaceholder: string;
+        message: string;
+        messagePlaceholder: string;
+        buttonProcess: string;
+        button: string;
+        success: string;
+        error: string;
+        nameError: string
+        emailError: string
+        messageError: string
+    }
+}) {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitMessage, setSubmitMessage] = useState('')
@@ -34,11 +51,11 @@ export default function FooterForm({ className }: { className?: string }) {
         const res = sendMessages(msg)
         res.then((res) => {
             if (res?.res.status === 200 || res?.res.status === 201) {
-                setSubmitMessage('Thank you for your submission. We will contact you soon!')
+                setSubmitMessage(translation?.success)
                 setIsSubmitting(false)
             } else {
                 setIsSubmitting(false)
-                setSubmitMessage('Something went wrong, Please try again!')
+                setSubmitMessage(translation?.error)
             }
         })
     }
@@ -46,57 +63,57 @@ export default function FooterForm({ className }: { className?: string }) {
     return (
         <Card className={cn("w-full max-lg:mx-auto max-w-4xl lg:max-w-md rounded-xl", className)}>
             <CardHeader>
-                <CardTitle>Get in touch</CardTitle>
+                <CardTitle>{translation?.title}</CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                     <div>
-                        <Label htmlFor="name" className='cursor-pointer'>Name</Label>
+                        <Label htmlFor="name" className='cursor-pointer'>{translation?.name}</Label>
                         <Input
                             id="name"
                             {...register("name", { required: "Name is required" })}
-                            placeholder="John Doe"
+                            placeholder={translation?.name}
                             className="border-gray-400 border rounded-xl placeholder:text-gray-400"
                         />
-                        {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
+                        {errors.name && <p className="text-sm text-red-500">{translation?.nameError}</p>}
                     </div>
 
                     <div>
-                        <Label htmlFor="email" className='cursor-pointer'>Email</Label>
+                        <Label htmlFor="email" className='cursor-pointer'>{translation?.email}</Label>
                         <Input
                             id="email"
                             type="email"
                             {...register("email", { required: "Email is required" })}
-                            placeholder="john@example.com"
+                            placeholder={translation?.email}
                             className="border-gray-400 border rounded-xl placeholder:text-gray-400"
                         />
-                        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+                        {errors.email && <p className="text-sm text-red-500">{translation?.emailError}</p>}
                     </div>
 
                     <div>
-                        <Label htmlFor="phone" className='cursor-pointer'>Phone Number</Label>
+                        <Label htmlFor="phone" className='cursor-pointer'>{translation?.phone}</Label>
                         <Input
                             id="phone"
                             type="tel"
                             {...register("phone")}
-                            placeholder="(123) 456-7890"
+                            placeholder={translation?.phonePlaceholder}
                             className="border-gray-400 border rounded-xl placeholder:text-gray-400"
                         />
                     </div>
 
                     <div>
-                        <Label htmlFor="message" className='cursor-pointer'>Message</Label>
+                        <Label htmlFor="message" className='cursor-pointer'>{translation?.message}</Label>
                         <textarea
                             id="message"
                             {...register("message", { required: "Message is required" })}
-                            placeholder="Tell us about your project or questions"
+                            placeholder={translation?.messagePlaceholder}
                             className="h-32 w-full border border-gray-400 p-2 rounded-xl placeholder:text-gray-400"
                         />
-                        {errors.message && <p className="text-sm text-red-500">{errors.message.message}</p>}
+                        {errors.message && <p className="text-sm text-red-500">{translation?.messageError}</p>}
                     </div>
 
                     <Button type="submit" className="w-full border border-gray-400 rounded-xl cursor-pointer" disabled={isSubmitting}>
-                        {isSubmitting ? 'Submitting...' : 'Submit'}
+                        {isSubmitting ? translation?.buttonProcess : translation?.button}
                     </Button>
                 </form>
             </CardContent>
