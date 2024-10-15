@@ -63,7 +63,7 @@ export const Footer: React.FC<Props> = ({ className }) => {
 
                 {/* Quick Links */}
                 <div className='flex flex-col justify-center items-center lg:items-start gap-5 order-3 lg:order-2'>
-                    <h4 className="text-lg font-semibold pl-0 lg:pl-4">Quick Links</h4>
+                    <h4 className="text-lg font-semibold">Quick Links</h4>
                     <ul className="w-full flex flex-col justify-center items-start gap-2">
                         {["Assortment", "News", "Community", "Contact"].map((item) => (
                             <li key={item}>

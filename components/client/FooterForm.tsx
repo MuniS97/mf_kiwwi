@@ -7,6 +7,7 @@ import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
+import { sendMessages } from '@/lib/https.request'
 
 type FormData = {
     name: string
@@ -20,13 +21,26 @@ export default function FooterForm({ className }: { className?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitMessage, setSubmitMessage] = useState('')
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async (info: FormData) => {
         setIsSubmitting(true)
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        console.log(data)
-        setSubmitMessage('Thank you for your submission. We will contact you soon!')
-        setIsSubmitting(false)
+
+        let msg = `🆕 Выйти на связь! \n`;
+        msg += `📌 Имя: ${info?.name} \n`;
+        msg += `📌 Номер телефона: ${info?.phone} \n`;
+        msg += `📌 Почта: ${info?.email} \n`;
+        msg += `📌 Сообщение: ${info?.message} \n`;
+
+
+        const res = sendMessages(msg)
+        res.then((res) => {
+            if (res?.res.status === 200 || res?.res.status === 201) {
+                setSubmitMessage('Thank you for your submission. We will contact you soon!')
+                setIsSubmitting(false)
+            } else {
+                setIsSubmitting(false)
+                setSubmitMessage('Something went wrong, Please try again!')
+            }
+        })
     }
 
     return (
@@ -35,8 +49,8 @@ export default function FooterForm({ className }: { className?: string }) {
                 <CardTitle>Get in touch</CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="space-y-2">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+                    <div>
                         <Label htmlFor="name" className='cursor-pointer'>Name</Label>
                         <Input
                             id="name"
@@ -47,7 +61,7 @@ export default function FooterForm({ className }: { className?: string }) {
                         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
                     </div>
 
-                    <div className="space-y-2">
+                    <div>
                         <Label htmlFor="email" className='cursor-pointer'>Email</Label>
                         <Input
                             id="email"
@@ -59,7 +73,7 @@ export default function FooterForm({ className }: { className?: string }) {
                         {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
                     </div>
 
-                    <div className="space-y-2">
+                    <div>
                         <Label htmlFor="phone" className='cursor-pointer'>Phone Number</Label>
                         <Input
                             id="phone"
@@ -70,7 +84,7 @@ export default function FooterForm({ className }: { className?: string }) {
                         />
                     </div>
 
-                    <div className="space-y-2">
+                    <div>
                         <Label htmlFor="message" className='cursor-pointer'>Message</Label>
                         <textarea
                             id="message"
